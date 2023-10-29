@@ -28,6 +28,7 @@ async function initPopup() {
  * @param {MouseEvent} event
  */
 async function popupLink(event) {
+    console.log('popupLink: event:', event)
     const url = chrome.runtime.getURL(event.target.dataset.href)
     console.log(`url: ${url}`)
     await chrome.tabs.create({ active: true, url })

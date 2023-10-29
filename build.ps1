@@ -19,11 +19,8 @@ if ($manifest_data.default_locale) {
     $name = $messages.$name_key.message
 }
 Write-Output "name: $name"
-$package_name = $name.replace(' ', '_').ToLower()
+$package_name = $name.replace(' ', '-').ToLower()
 Write-Output "package_name: $package_name"
-
-## Setup
-Start-Process -Wait -NoNewWindow -FilePath "npm" -ArgumentList "install"
 
 Write-Output "Building Version: $($manifest_data.version)"
 if (Test-Path $build_dir) {
@@ -35,9 +32,12 @@ if (Test-Path $build_dir) {
     New-Item -ItemType Directory -Path $build_dir | Out-Null
 }
 
+## Setup
+Start-Process -Wait -NoNewWindow -FilePath "npm" -ArgumentList "install"
+
 ## FireFox
 Write-Output "Building FireFox"
-$filename = "$($package_name)-$($manifest_data.version).xpi"
+$filename = "$($package_name)_$($manifest_data.version).xpi"
 Start-Process -Wait -NoNewWindow -FilePath "npx" -ArgumentList "web-ext build --overwrite-dest --source-dir=$src_dir --filename=$filename"
 
 ## Chrome
@@ -46,14 +46,14 @@ if ($chrome, $chrome_pem)
     Write-Output "Building Chrome"
     Start-Process -Wait -NoNewWindow -FilePath $chrome -ArgumentList "--pack-extension=$src_dir", "--pack-extension-key=$chrome_pem"
     $chrome_crx = Get-Item *.crx
-    $destination = Join-Path -Path $build_dir -ChildPath "$($package_name)-$($manifest_data.version).crx"
+    $destination = Join-Path -Path $build_dir -ChildPath "$($package_name)_$($manifest_data.version).crx"
     Write-Output "destination: $destination"
     Move-Item -Path $chrome_crx -Destination $destination
 }
 
 ## Archive
 Write-Output "Building Archive"
-$destination = Join-Path -Path $build_dir -ChildPath "$($package_name)-$($manifest_data.version).zip"
+$destination = Join-Path -Path $build_dir -ChildPath "$($package_name)_$($manifest_data.version).zip"
 Write-Output "destination: $destination"
 $compress = @{
     Path = "$src_dir\*"

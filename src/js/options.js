@@ -23,7 +23,7 @@ async function initOptions() {
  */
 async function saveOptions(event) {
     event.preventDefault()
-    console.log('saveOptions')
+    console.log('saveOptions: event:', event)
     const favoriteColor = document.getElementById('favoriteColor').value
     console.log(`favoriteColor: ${favoriteColor}`)
     await chrome.storage.sync.set({ favoriteColor: favoriteColor })

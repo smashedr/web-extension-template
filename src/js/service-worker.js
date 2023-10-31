@@ -1,14 +1,14 @@
 // Background Service Worker JS
 
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(async function () {
     const contexts = [
-        // ['link', 'Link Menu'],
-        // ['page', 'Page Menu'],
+        // ['link', 'link', 'Link Menu'],
+        ['page', 'page', 'Copy Page URL to Clipboard'],
         ['selection', 'color', 'Set Selection as Favorite Color'],
         ['selection', 'copy', 'Copy Selection to Clipboard'],
-        // ['audio', 'Audio Menu'],
-        // ['image', 'Image Menu'],
-        // ['video', 'Video Menu'],
+        // ['audio', 'audio', 'Audio Menu'],
+        // ['image', 'image', 'Image Menu'],
+        // ['video', 'video', 'Video Menu'],
     ]
     for (const context of contexts) {
         chrome.contextMenus.create({
@@ -17,16 +17,25 @@ chrome.runtime.onInstalled.addListener(function () {
             id: context[1],
         })
     }
+    // Set Default Options
+    // let { favoriteColor } = await chrome.storage.sync.get(['favoriteColor'])
+    // if (!favoriteColor) {
+    //     await chrome.storage.sync.set({ favoriteColor: '' })
+    // }
 })
 
 chrome.contextMenus.onClicked.addListener(async function (ctx) {
     console.log('ctx:', ctx)
     console.log('ctx.menuItemId: ' + ctx.menuItemId)
-    if (ctx.menuItemId === 'copy') {
+    if (ctx.menuItemId === 'page') {
+        console.log(`ctx.pageUrl: ${ctx.pageUrl}`)
+        await clipboardWrite(ctx.pageUrl)
+        await sendNotification('Copied Page URL', ctx.pageUrl)
+    } else if (ctx.menuItemId === 'copy') {
         const text = ctx.selectionText.trim()
         console.log(`text: ${text}`)
         await clipboardWrite(text)
-        await sendNotification('Copied', text.substring(0, 64))
+        await sendNotification('Copied Selection', text.substring(0, 64))
     } else if (ctx.menuItemId === 'color') {
         const favoriteColor = ctx.selectionText.trim().toLowerCase()
         console.log(`favoriteColor: ${favoriteColor}`)
@@ -42,6 +51,8 @@ chrome.contextMenus.onClicked.addListener(async function (ctx) {
                 `Color: ${favoriteColor}`
             )
         }
+    } else {
+        console.error(`UNKNOWN ctx.menuItemId: ${ctx.menuItemId}`)
     }
 })
 

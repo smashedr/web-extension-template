@@ -42,9 +42,9 @@ jobs:
       - name: "Create Chrome ZIP Archives"
         working-directory: src
         run: |
-          mkdir -p web-ext-artifacts
-          cp -f ../manifest-chrome.json manifest.json
-          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}_chrome_${{ steps.manifest.outputs.version }}.zip" -r .
+          cp -f ../manifest-chrome.json manifest.jso
+          mkdir -p ../web-ext-artifactsn
+          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-chrome-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Setup Chrome"
 #        id: setup-chrome
@@ -63,9 +63,9 @@ jobs:
       - name: "Create Firefox ZIP Archives"
         working-directory: src
         run: |
-          mkdir -p web-ext-artifacts
           cp -f ../manifest-firefox.json manifest.json
-          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}_firefox_${{ steps.manifest.outputs.version }}.zip" -r .
+          mkdir -p ../web-ext-artifacts
+          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-firefox-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Build Firefox"
 #        id: web-ext-build

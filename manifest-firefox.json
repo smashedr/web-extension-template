@@ -12,10 +12,10 @@
   },
   "permissions": [
     "activeTab",
-    "scripting",
-    "storage",
     "clipboardWrite",
-    "contextMenus"
+    "contextMenus",
+    "notifications",
+    "scripting"
   ],
   "background": {
     "scripts": ["js/service-worker.js"],

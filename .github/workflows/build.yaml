@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p web-ext-artifacts
           cp -f ../manifest-chrome.json manifest.json
-          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-${{ steps.manifest.outputs.version }}-chrome.zip" -r .
+          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}_chrome_${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Setup Chrome"
 #        id: setup-chrome
@@ -65,7 +65,7 @@ jobs:
         run: |
           mkdir -p web-ext-artifacts
           cp -f ../manifest-firefox.json manifest.json
-          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-${{ steps.manifest.outputs.version }}-firefox.zip" -r .
+          zip "../web-ext-artifacts/${{ steps.manifest.outputs.package_name }}_firefox_${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Build Firefox"
 #        id: web-ext-build

@@ -43,7 +43,7 @@ See [build.yaml](.github/workflows/build.yaml) for more information.
 1.  Unzip the archive, place the folder where it must remain and note its location for later.
 1.  Open Chrome, click the `3 dots` in the top right, click `Extensions`, click `Manage Extensions`.
 1.  In the top right, click `Developer Mode` then on the top left click `Load unpacked`.
-1.  Navigate to the folder you extracted in step #3 then click `Select Folder`.
+1.  Navigate to the folder you extracted earlier, then click `Select Folder`.
 
 ## Firefox Setup
 
@@ -51,7 +51,9 @@ For development, you can and should load unpacked in Firefox as a temporary addo
 This will **not** remain after restarting Firefox. It is also useful to keep data after removing an extension.
 
 1.  Download a [Release](https://github.com/cssnr/link-extractor/releases).
-1.  Load temporary from: `about:debugging#/runtime/this-firefox`
+1.  Unzip the archive, place the folder where it must remain and note its location for later.
+1.  Go to `about:debugging#/runtime/this-firefox` and click `Load Temporary Add-on...`
+1.  Navigate to the folder you extracted earlier, select `manifest.json` then click `Select File`.
 1.  Open `about:config` search for `extensions.webextensions.keepStorageOnUninstall` and set to `true`.
 
 > **Note**

@@ -4,16 +4,17 @@ chrome.runtime.onInstalled.addListener(function () {
     const contexts = [
         // ['link', 'Link Menu'],
         // ['page', 'Page Menu'],
-        ['selection', 'Copy Selection to Clipboard'],
+        ['selection', 'color', 'Set Selection as Favorite Color'],
+        ['selection', 'copy', 'Copy Selection to Clipboard'],
         // ['audio', 'Audio Menu'],
         // ['image', 'Image Menu'],
         // ['video', 'Video Menu'],
     ]
     for (const context of contexts) {
         chrome.contextMenus.create({
-            title: context[1],
+            title: context[2],
             contexts: [context[0]],
-            id: context[0],
+            id: context[1],
         })
     }
 })
@@ -21,10 +22,26 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.contextMenus.onClicked.addListener(async function (ctx) {
     console.log('ctx:', ctx)
     console.log('ctx.menuItemId: ' + ctx.menuItemId)
-    if (ctx.menuItemId === 'selection') {
-        console.log('clipboardWrite: ctx.selectionText:', ctx.selectionText)
-        await clipboardWrite(ctx.selectionText)
-        await sendNotification('Copied', ctx.selectionText.substring(0, 50))
+    if (ctx.menuItemId === 'copy') {
+        const text = ctx.selectionText.trim()
+        console.log(`text: ${text}`)
+        await clipboardWrite(text)
+        await sendNotification('Copied', text.substring(0, 64))
+    } else if (ctx.menuItemId === 'color') {
+        const favoriteColor = ctx.selectionText.trim().toLowerCase()
+        console.log(`favoriteColor: ${favoriteColor}`)
+        if (favoriteColor.length > 32) {
+            await sendNotification(
+                'Error',
+                'Color is longer than 32 characters long.'
+            )
+        } else {
+            await chrome.storage.sync.set({ favoriteColor })
+            await sendNotification(
+                'Favorite Color Saved',
+                `Color: ${favoriteColor}`
+            )
+        }
     }
 })
 
@@ -43,7 +60,7 @@ chrome.notifications.onClicked.addListener((notificationId) => {
  * @param {number} timeout
  */
 async function sendNotification(title, text, id = '', timeout = 10) {
-    console.log(`sendNotification: ${id}: ${title} - ${text}`)
+    console.log(`sendNotification: ${id || 'randomID'}: ${title} - ${text}`)
     const options = {
         type: 'basic',
         iconUrl: chrome.runtime.getURL('images/logo128.png'),

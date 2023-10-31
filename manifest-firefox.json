@@ -15,7 +15,8 @@
     "clipboardWrite",
     "contextMenus",
     "notifications",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "background": {
     "scripts": ["js/service-worker.js"],

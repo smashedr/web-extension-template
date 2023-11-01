@@ -36,7 +36,7 @@ jobs:
           _name=$(jq -r '.name' < "${{ env.MANIFEST }}")
           if [ "${_locale}" != "null" ];then
             _name_key=$(echo  "${_name}" | sed 's/^__MSG_//' | sed 's/__$//')
-            _name=$(jq -r ".${_name_key}.message" < "${_src_dir}/_locales/${_locale}/messages.json")
+            _name=$(jq -r ".${_name_key}.message" < "${{ env.SRC_DIR }}/_locales/${_locale}/messages.json")
           fi
           echo "_name: ${_name}"
           _package_name=$(echo "${_name// /_}" | tr '[:upper:]' '[:lower:]')

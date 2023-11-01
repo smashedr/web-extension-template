@@ -65,7 +65,8 @@ jobs:
         run: |
           npm run chrome
           mkdir -p web-ext-artifacts
-          zip "web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-chrome-${{ steps.manifest.outputs.version }}.zip" -r "${{ env.SRC_DIR }}"
+          cd "${{ env.SRC_DIR }}"
+          zip "web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-chrome-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Setup Chrome"
 #        id: setup-chrome
@@ -85,7 +86,8 @@ jobs:
         run: |
           npm run firefox
           mkdir -p web-ext-artifacts
-          zip "web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-firefox-${{ steps.manifest.outputs.version }}.zip" -r "${{ env.SRC_DIR }}"
+          cd "${{ env.SRC_DIR }}"
+          zip "web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-firefox-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Build Firefox"
 #        id: web-ext-build

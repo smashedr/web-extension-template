@@ -30,10 +30,28 @@ jobs:
       - name: "Parse Manifest"
         id: manifest
         run: |
-          # export version="$(jq '.version' < ${{ env.MANIFEST }})"
-          echo "version=$(jq '.version' < ${{ env.MANIFEST }})" >> "$GITHUB_OUTPUT"
-          export name="$(jq '.name' < ${{ env.MANIFEST }} | tr '[:upper:]' '[:lower:]')"
-          echo "package_name=${name// /_}" >> "$GITHUB_OUTPUT"
+          echo "Parsing Variables"
+          _locale=$(jq -r '.default_locale' < "${_src_dir}/manifest.json")
+          echo "_locale: ${_locale}"
+          _name=$(jq -r '.name' < "${_src_dir}/manifest.json")
+          if [ "${_locale}" != "null" ];then
+            _name_key=$(echo  "${_name}" | sed 's/^__MSG_//' | sed 's/__$//')
+            _name=$(jq -r ".${_name_key}.message" < "${_src_dir}/_locales/${_locale}/messages.json")
+          fi
+          echo "_name: ${_name}"
+          _package_name=$(echo "${_name// /_}" | tr '[:upper:]' '[:lower:]')
+          echo "_package_name: ${_package_name}"
+          _version=$(jq -r '.version' < "${_src_dir}/manifest.json")
+          echo "_version: ${_version}"
+          _full_name="${_package_name}_${_version}"
+          echo "_full_name: ${_full_name}"
+          echo "version=${_version}" >> "$GITHUB_OUTPUT"
+          echo "package_name=${_package_name}" >> "$GITHUB_OUTPUT"
+          
+          # # export version="$(jq '.version' < ${{ env.MANIFEST }})"
+          # echo "version=$(jq '.version' < ${{ env.MANIFEST }})" >> "$GITHUB_OUTPUT"
+          # export name="$(jq '.name' < ${{ env.MANIFEST }} | tr '[:upper:]' '[:lower:]')"
+          # echo "package_name=${name// /_}" >> "$GITHUB_OUTPUT"
 
       - name: "Release Manifest Version Check"
         if: ${{ github.event_name == 'release' }}

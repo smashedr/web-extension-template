@@ -65,8 +65,11 @@ jobs:
         run: |
           npm run chrome
           mkdir -p "web-ext-artifacts"
+          pwd
           cd "${{ env.SRC_DIR }}"
-          zip "${{ env.GITHUB_ACTION_PATH }}/web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-chrome-${{ steps.manifest.outputs.version }}.zip" -r .
+          echo ${{ env.GITHUB_ACTION_PATH }}
+          echo ${{ github.workspace }}
+          zip "${{ env.GITHUB_WORKSPACE }}/web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-chrome-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Setup Chrome"
 #        id: setup-chrome
@@ -87,7 +90,7 @@ jobs:
           npm run firefox
           mkdir -p "web-ext-artifacts"
           cd "${{ env.SRC_DIR }}"
-          zip "${{ env.GITHUB_ACTION_PATH }}/web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-firefox-${{ steps.manifest.outputs.version }}.zip" -r .
+          zip "${{ env.GITHUB_WORKSPACE }}/web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-firefox-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Build Firefox"
 #        id: web-ext-build

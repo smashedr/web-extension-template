@@ -31,9 +31,9 @@ jobs:
         id: manifest
         run: |
           echo "Parsing Variables"
-          _locale=$(jq -r '.default_locale' < "${_src_dir}/manifest.json")
+          _locale=$(jq -r '.default_locale' < "${{ env.MANIFEST }}")
           echo "_locale: ${_locale}"
-          _name=$(jq -r '.name' < "${_src_dir}/manifest.json")
+          _name=$(jq -r '.name' < "${{ env.MANIFEST }}")
           if [ "${_locale}" != "null" ];then
             _name_key=$(echo  "${_name}" | sed 's/^__MSG_//' | sed 's/__$//')
             _name=$(jq -r ".${_name_key}.message" < "${_src_dir}/_locales/${_locale}/messages.json")
@@ -41,7 +41,7 @@ jobs:
           echo "_name: ${_name}"
           _package_name=$(echo "${_name// /_}" | tr '[:upper:]' '[:lower:]')
           echo "_package_name: ${_package_name}"
-          _version=$(jq -r '.version' < "${_src_dir}/manifest.json")
+          _version=$(jq -r '.version' < "${{ env.MANIFEST }}")
           echo "_version: ${_version}"
           _full_name="${_package_name}_${_version}"
           echo "_full_name: ${_full_name}"

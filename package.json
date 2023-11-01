@@ -2,8 +2,10 @@
   "scripts": {
     "postinstall": "npx gulp",
     "lint": "npx eslint src/js",
-    "chrome": "npx json-merger -p -am concat -o src/manifest.json manifest.json manifest-chrome.json",
-    "firefox": "npx json-merger -p -am concat -o src/manifest.json manifest.json manifest-firefox.json",
+    "chrome": "npm run make-chrome && web-ext run --source-dir ./src/ --target=chromium",
+    "firefox": "npm run make-firefox && web-ext run --source-dir ./src/",
+    "make-chrome": "npx json-merger -p -am concat -o src/manifest.json manifest.json manifest-chrome.json",
+    "make-firefox": "npx json-merger -p -am concat -o src/manifest.json manifest.json manifest-firefox.json",
     "build-chrome": "npm run chrome && npx web-ext build -n {name}-chrome-{version}.zip -o -s src",
     "build-firefox": "npm run firefox && npx web-ext build -n {name}-firefox-{version}.zip -o -s src",
     "build-all": "npm run build-chrome && npm run build-firefox"

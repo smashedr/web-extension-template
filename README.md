@@ -6,6 +6,7 @@ Modern Chrome and Firefox Web Extension to remember your favorite color.
 *   [Features](#features)
 *   [Configuration](#configuration)
 *   [Development](#development)
+    -   [Building](#building)
     -   [Chrome Setup](#chrome-setup)
     -   [Firefox Setup](#firefox-setup)
 
@@ -17,6 +18,7 @@ Modern Chrome and Firefox Web Extension to remember your favorite color.
 # Features
 
 *   Set and Display your Favorite Color
+*   Set Selected Text to Favorite Color
 
 # Configuration
 
@@ -28,18 +30,40 @@ To open the options, click on the icon (from above) then click `Open Options`.
 
 # Development
 
-To build locally or run from source, clone the repository then run `npm install`.
-You can then run the addon from the [src](src) directory as normal.
+**Quick Start.** To build and run with web-ext.
+```shell
+npm install
+npm run chrome
+npm run firefox
+```
 
-NPM is only used to manage dependency versions and copy files to `src/dist`.
-Files are copied automatically after `npm install`. See [gulpfile.js](gulpfile.js) for more information.
+## Building
 
-The extension is automatically built on new releases then automatically uploaded to that release.
-See [build.yaml](.github/workflows/build.yaml) for more information.
+First, install the requirements and copy libraries into the `src/dist` directory by running `npm install`.
+See [gulpfile.js](gulpfile.js) for more information.
+```shell
+npm install
+```
+
+To load unpacked or temporary addon from the [src](src) folder you must generate the `src/manifest.json` for the desired browser.
+run one of the following commands.
+```shell
+npm run make-chrome
+npm run make-firefox
+```
+
+If you would like to create a `.zip` archive of the [src](src) directory for the desired browser, run one of the following commands.
+```shell
+npm run build-chrome
+npm run build-firefox
+npm run build-all
+```
+
+For more information on building, see the scripts in the [package.json](package.json) file.
 
 ## Chrome Setup
 
-1.  Download a [Release](https://github.com/cssnr/link-extractor/releases).
+1.  Build or Download a [Release](https://github.com/cssnr/link-extractor/releases).
 1.  Unzip the archive, place the folder where it must remain and note its location for later.
 1.  Open Chrome, click the `3 dots` in the top right, click `Extensions`, click `Manage Extensions`.
 1.  In the top right, click `Developer Mode` then on the top left click `Load unpacked`.
@@ -50,7 +74,7 @@ See [build.yaml](.github/workflows/build.yaml) for more information.
 For development, you can and should load unpacked in Firefox as a temporary addon.
 This will **not** remain after restarting Firefox. It is also useful to keep data after removing an extension.
 
-1.  Download a [Release](https://github.com/cssnr/link-extractor/releases).
+1.  Build or Download a [Release](https://github.com/cssnr/link-extractor/releases).
 1.  Unzip the archive, place the folder where it must remain and note its location for later.
 1.  Go to `about:debugging#/runtime/this-firefox` and click `Load Temporary Add-on...`
 1.  Navigate to the folder you extracted earlier, select `manifest.json` then click `Select File`.

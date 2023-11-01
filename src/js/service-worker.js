@@ -65,10 +65,10 @@ chrome.notifications.onClicked.addListener((notificationId) => {
 /**
  * Send Browser Notification
  * @function sendNotification
- * @param {string} title
- * @param {string} text
- * @param {string} id
- * @param {number} timeout
+ * @param {String} title
+ * @param {String} text
+ * @param {String} id
+ * @param {Number} timeout
  */
 async function sendNotification(title, text, id = '', timeout = 10) {
     console.log(`sendNotification: ${id || 'randomID'}: ${title} - ${text}`)
@@ -88,7 +88,7 @@ async function sendNotification(title, text, id = '', timeout = 10) {
 /**
  * Write value to Clipboard for Firefox and Chrome
  * @function clipboardWrite
- * @param {string} value
+ * @param {String} value
  */
 async function clipboardWrite(value) {
     if (navigator.clipboard) {

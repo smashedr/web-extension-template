@@ -29,7 +29,12 @@ async function initPopup() {
  */
 async function popupLink(event) {
     console.log('popupLink: event:', event)
-    const url = chrome.runtime.getURL(event.target.dataset.href)
+    let url
+    if (event.target.dataset.href.startsWith('http')) {
+        url = event.target.dataset.href
+    } else {
+        url = chrome.runtime.getURL(event.target.dataset.href)
+    }
     console.log(`url: ${url}`)
     await chrome.tabs.create({ active: true, url })
     window.close()

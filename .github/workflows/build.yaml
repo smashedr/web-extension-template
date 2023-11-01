@@ -1,13 +1,9 @@
-name: build
+name: "Build"
 
 on:
   workflow_dispatch:
   release:
     types: [published]
-
-env:
-  SRC_DIR: "src"
-  MANIFEST: "manifest.json"
 
 jobs:
   build:
@@ -19,7 +15,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: "Setup Node 18"
+      - name: "Setup Node"
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -30,14 +26,13 @@ jobs:
       - name: "Build All"
         run: npm run build-all
 
-      - name: "Archive Artifacts"
+      - name: "Upload to Actions"
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: web-ext-artifacts/
 
-      - name: "Upload Artifacts to Release"
-        if: ${{ github.event_name == 'release' }}
+      - name: "Upload to Release"
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}

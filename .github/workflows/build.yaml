@@ -64,9 +64,9 @@ jobs:
       - name: "Create Chrome ZIP Archives"
         run: |
           npm run chrome
-          mkdir -p web-ext-artifacts
+          mkdir -p "web-ext-artifacts"
           cd "${{ env.SRC_DIR }}"
-          zip "web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-chrome-${{ steps.manifest.outputs.version }}.zip" -r .
+          zip "${{ env.GITHUB_ACTION_PATH }}/web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-chrome-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Setup Chrome"
 #        id: setup-chrome
@@ -85,9 +85,9 @@ jobs:
       - name: "Create Firefox ZIP Archives"
         run: |
           npm run firefox
-          mkdir -p web-ext-artifacts
+          mkdir -p "web-ext-artifacts"
           cd "${{ env.SRC_DIR }}"
-          zip "web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-firefox-${{ steps.manifest.outputs.version }}.zip" -r .
+          zip "${{ env.GITHUB_ACTION_PATH }}/web-ext-artifacts/${{ steps.manifest.outputs.package_name }}-firefox-${{ steps.manifest.outputs.version }}.zip" -r .
 
 #      - name: "Build Firefox"
 #        id: web-ext-build

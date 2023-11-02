@@ -1,8 +1,8 @@
 {
-  "permissions": [
-    "offscreen"
-  ],
   "background": {
     "service_worker": "js/service-worker.js"
-  }
+  },
+  "permissions": [
+    "offscreen"
+  ]
 }

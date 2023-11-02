@@ -1,30 +1,37 @@
 // Background Service Worker JS
 
-chrome.runtime.onInstalled.addListener(async function () {
-    const contexts = [
-        // ['link', 'link', 'Link Menu'],
-        ['page', 'page', 'Copy Page URL to Clipboard'],
-        ['selection', 'color', 'Set Selection as Favorite Color'],
-        ['selection', 'copy', 'Copy Selection to Clipboard'],
-        // ['audio', 'audio', 'Audio Menu'],
-        // ['image', 'image', 'Image Menu'],
-        // ['video', 'video', 'Video Menu'],
-    ]
-    for (const context of contexts) {
-        chrome.contextMenus.create({
-            title: context[2],
-            contexts: [context[0]],
-            id: context[1],
-        })
-    }
-    // Set Default Options
-    // let { favoriteColor } = await chrome.storage.sync.get(['favoriteColor'])
-    // if (!favoriteColor) {
-    //     await chrome.storage.sync.set({ favoriteColor: '' })
-    // }
+import { createContextMenus } from './exports.js'
+
+chrome.runtime.onInstalled.addListener(onInstalled)
+
+chrome.contextMenus.onClicked.addListener(contextMenuClick)
+
+chrome.notifications.onClicked.addListener((notificationId) => {
+    // You need to provide an id to the sendNotification function to make this usable
+    console.log(`notifications.onClicked: ${notificationId}`)
+    chrome.notifications.clear(notificationId)
 })
 
-chrome.contextMenus.onClicked.addListener(async function (ctx) {
+/**
+ * Init Context Menus and Options
+ * @function onInstalled
+ */
+export async function onInstalled() {
+    console.log('onInstalled')
+    let { options } = await chrome.storage.sync.get(['options'])
+    options = options || { favoriteColor: '', contextMenu: true }
+    await chrome.storage.sync.set({ options })
+    if (options.contextMenu) {
+        createContextMenus()
+    }
+}
+
+/**
+ * Context Menu Click Callback
+ * @function contextMenuClick
+ * @param {Object} ctx
+ */
+async function contextMenuClick(ctx) {
     console.log('ctx:', ctx)
     console.log('ctx.menuItemId: ' + ctx.menuItemId)
     if (ctx.menuItemId === 'page') {
@@ -52,15 +59,9 @@ chrome.contextMenus.onClicked.addListener(async function (ctx) {
             )
         }
     } else {
-        console.error(`UNKNOWN ctx.menuItemId: ${ctx.menuItemId}`)
+        console.error(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
     }
-})
-
-chrome.notifications.onClicked.addListener((notificationId) => {
-    // You need to provide an id to the sendNotification function to make this usable
-    console.log(`notifications.onClicked: ${notificationId}`)
-    chrome.notifications.clear(notificationId)
-})
+}
 
 /**
  * Send Browser Notification

@@ -1,5 +1,7 @@
 // JS for options.html
 
+import { createContextMenus } from './exports.js'
+
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('options-form').addEventListener('submit', saveOptions)
 
@@ -9,11 +11,10 @@ document.getElementById('options-form').addEventListener('submit', saveOptions)
  */
 async function initOptions() {
     console.log('initOptions')
-    const { favoriteColor } = await chrome.storage.sync.get(['favoriteColor'])
-    console.log(`favoriteColor: ${favoriteColor}`)
-    if (favoriteColor) {
-        document.getElementById('favoriteColor').value = favoriteColor
-    }
+    const { options } = await chrome.storage.sync.get(['options'])
+    console.log('options:', options)
+    document.getElementById('contextMenu').checked = options.contextMenu
+    document.getElementById('favoriteColor').value = options.favoriteColor
 }
 
 /**
@@ -24,9 +25,16 @@ async function initOptions() {
 async function saveOptions(event) {
     event.preventDefault()
     console.log('saveOptions: event:', event)
-    const favoriteColor = document.getElementById('favoriteColor').value
-    console.log(`favoriteColor: ${favoriteColor}`)
-    await chrome.storage.sync.set({ favoriteColor })
+    let options = {}
+    options.contextMenu = document.getElementById('contextMenu').checked
+    options.favoriteColor = document.getElementById('favoriteColor').value
+    console.log('options:', options)
+    if (options.contextMenu) {
+        createContextMenus()
+    } else {
+        chrome.contextMenus.removeAll()
+    }
+    await chrome.storage.sync.set({ options })
     showToast('Options Saved')
 }
 

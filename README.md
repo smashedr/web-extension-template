@@ -1,11 +1,18 @@
-[![Build](https://github.com/smashedr/web-extension-template/actions/workflows/build.yaml/badge.svg)](https://github.com/smashedr/web-extension-template/actions/workflows/build.yaml)
-[![Manifest Version](https://img.shields.io/github/manifest-json/v/smashedr/web-extension-template?filename=manifest.json&logo=json&label=manifest)](https://github.com/smashedr/web-extension-template/blob/master/manifest.json)
-[![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/web-extension-template?logo=github)](https://github.com/smashedr/web-extension-template/releases/latest)
+[![Build](https://github.com/cssnr/link-extractor/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/link-extractor/actions/workflows/build.yaml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_link-extractor&metric=alert_status&label=quality)](https://sonarcloud.io/summary/overall?id=cssnr_link-extractor)
+[![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/link-extractor?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/link-extractor/blob/master/src/manifest.json)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/link-extractor?logo=github)](https://github.com/cssnr/link-extractor/releases/latest)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/ifefifghpkllfibejafbakmflidjcjfp?label=chrome&logo=googlechrome)](https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
+[![Mozilla Add-on Version](https://img.shields.io/amo/v/link-extractor?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/link-extractor)
+[![Microsoft Edge Add-ons Version](https://img.shields.io/badge/dynamic/json?label=edge&logo=microsoftedge&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fnmndaimimedljcfgnnoahempcajdamej)](https://microsoftedge.microsoft.com/addons/detail/link-extractor/nmndaimimedljcfgnnoahempcajdamej)
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/ifefifghpkllfibejafbakmflidjcjfp?logo=google&logoColor=white&label=google%20users)](https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
+[![Mozilla Add-on Users](https://img.shields.io/amo/users/link-extractor?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/link-extractor)
+[![Microsoft Edge Add-ons Users](https://img.shields.io/badge/dynamic/json?label=microsoft%20users&logo=microsoft&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fnmndaimimedljcfgnnoahempcajdamej)](https://microsoftedge.microsoft.com/addons/detail/link-extractor/nmndaimimedljcfgnnoahempcajdamej)
 # Web Extension
 
 Modern Chrome and Firefox Web Extension to set and remember your favorite color.
 
-*   [Download](#download)
+*   [Install](#install)
 *   [Features](#features)
 *   [Configuration](#configuration)
 *   [Development](#development)
@@ -13,10 +20,29 @@ Modern Chrome and Firefox Web Extension to set and remember your favorite color.
     -   [Chrome Setup](#chrome-setup)
     -   [Firefox Setup](#firefox-setup)
 
-# Download
+# Install
 
-*   Firefox: https://addons.mozilla.org/addon/
-*   Chrome: https://chrome.google.com/webstore/detail/
+*   [Google Chrome Web Store](https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
+*   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/link-extractor)
+*   [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/link-extractor/nmndaimimedljcfgnnoahempcajdamej)
+
+Tested on the following browsers:
+
+<a href="https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp">
+    <img src="https://raw.githubusercontent.com/raivo-otp/issuer-icons/master/vectors/google.com/google-chrome.svg" width="48" height="48" /></a>
+<a href="https://addons.mozilla.org/addon/link-extractor">
+    <img src="https://raw.githubusercontent.com/raivo-otp/issuer-icons/master/vectors/firefox.com/firefox.svg" width="48" height="48" /></a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/link-extractor/nmndaimimedljcfgnnoahempcajdamej">
+    <img src="https://raw.githubusercontent.com/raivo-otp/issuer-icons/master/vectors/microsoft.com/microsoft-edge.svg" width="48" height="48" /></a>
+<a href="https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp">
+    <img src="https://raw.githubusercontent.com/raivo-otp/issuer-icons/master/vectors/opera.com/opera.svg" width="48" height="48" /></a>
+<a href="https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp">
+    <img src="https://raw.githubusercontent.com/raivo-otp/issuer-icons/master/vectors/brave.com/brave.svg" width="48" height="48" /></a>
+<a href="https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp">
+    <img src="https://raw.githubusercontent.com/raivo-otp/issuer-icons/master/vectors/vivaldi.com/vivaldi.svg" width="48" height="48" /></a>
+
+All Chromium Based Browsers can install the extension from the
+[Chrome Web Store](https://chrome.google.com/webstore/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp).
 
 # Features
 
@@ -33,20 +59,23 @@ To open the options, click on the icon (from above) then click `Open Options`.
 
 # Development
 
-**See Below** for which commands do which, but the general workflow is as follows:
+**Quick Start**
 
-1.  Install node modules and copy libraries to the `src/dist` directory.
-1.  Generate the `manifest.json` for the desired browser in the `src/manifest.json` directory.
-
-Quick Start, build and run with web-ext.
+To run chrome or firefox with web-ext.
 ```shell
-npm install
+npm isntall
 npm run chrome
 npm run firefox
 ```
 
-For more information on web-ext [read this documentation](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/).  
-To pass additional arguments to npm run commands use `--`.  
+To Load Unpacked/Temporary Add-on make a `manifest.json` with.
+```shell
+npm run make-chrome
+npm run make-firefox
+```
+
+For more information on web-ext, [read this documentation](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/).  
+To pass additional arguments to an `npm run` command, use `--`.  
 Example: `npm run chrome -- --chromium-binary=...`
 
 ## Building
@@ -74,7 +103,7 @@ For more information on building, see the scripts in the [package.json](package.
 
 ## Chrome Setup
 
-1.  Build or Download a [Release](https://github.com/smashedr/web-extension-template/releases).
+1.  Build or Download a [Release](https://github.com/cssnr/link-extractor/releases).
 1.  Unzip the archive, place the folder where it must remain and note its location for later.
 1.  Open Chrome, click the `3 dots` in the top right, click `Extensions`, click `Manage Extensions`.
 1.  In the top right, click `Developer Mode` then on the top left click `Load unpacked`.
@@ -85,7 +114,7 @@ For more information on building, see the scripts in the [package.json](package.
 Note: Firefox Temporary addon's will **not** remain after restarting Firefox, therefore;
 it is very useful to keep addon storage after uninstall/restart with `keepStorageOnUninstall`.
 
-1.  Build or Download a [Release](https://github.com/smashedr/web-extension-template/releases).
+1.  Build or Download a [Release](https://github.com/cssnr/link-extractor/releases).
 1.  Unzip the archive, place the folder where it must remain and note its location for later.
 1.  Go to `about:debugging#/runtime/this-firefox` and click `Load Temporary Add-on...`
 1.  Navigate to the folder you extracted earlier, select `manifest.json` then click `Select File`.

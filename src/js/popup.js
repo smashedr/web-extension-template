@@ -1,23 +1,22 @@
 // JS for popup.html
 
-jQuery('html').hide().fadeIn('slow')
+document.addEventListener('DOMContentLoaded', initPopup)
 
 document.querySelectorAll('[data-href]').forEach((el) => {
     el.addEventListener('click', popupLink)
 })
-
-document.addEventListener('DOMContentLoaded', initPopup)
 
 /**
  * Initialize Popup
  * @function initPopup
  */
 async function initPopup() {
-    const { favoriteColor } = await chrome.storage.sync.get(['favoriteColor'])
-    console.log(favoriteColor)
-    if (favoriteColor) {
-        console.log('set favoriteColor')
-        document.getElementById('favoriteColor').textContent = favoriteColor
+    const { options } = await chrome.storage.sync.get(['options'])
+    console.log('options', options)
+    if (options.favoriteColor) {
+        console.log(`options.favoriteColor: ${options.favoriteColor}`)
+        document.getElementById('favoriteColor').textContent =
+            options.favoriteColor
     }
 }
 

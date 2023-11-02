@@ -1,6 +1,6 @@
 // JS loaded first
 
-new ClipboardJS('.clip')
+// new ClipboardJS('.clip')
 
 document.querySelectorAll('[data-locale]').forEach((el) => {
     if (el.dataset.locale?.toString() === 'version') {
@@ -11,7 +11,7 @@ document.querySelectorAll('[data-locale]').forEach((el) => {
         if (value) {
             el.innerText = value
         } else {
-            console.log(`Value Not Found for ${el.dataset.locale}`)
+            console.warn(`Value Not Found for ${el.dataset.locale}`)
         }
     }
 })

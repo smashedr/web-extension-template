@@ -20,6 +20,7 @@ export async function onInstalled() {
     console.log('onInstalled')
     let { options } = await chrome.storage.sync.get(['options'])
     options = options || { favoriteColor: '', contextMenu: true }
+    console.log('options:', options)
     await chrome.storage.sync.set({ options })
     if (options.contextMenu) {
         createContextMenus()

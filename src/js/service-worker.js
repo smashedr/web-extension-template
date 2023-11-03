@@ -59,6 +59,9 @@ async function contextMenuClick(ctx) {
                 `Color: ${favoriteColor}`
             )
         }
+    } else if (ctx.menuItemId === 'options') {
+        const url = chrome.runtime.getURL('/html/options.html')
+        await chrome.tabs.create({ active: true, url })
     } else {
         console.error(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
     }

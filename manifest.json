@@ -5,6 +5,7 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "homepage_url": "https://github.com/cssnr",
+  "author": "Shane",
   "permissions": [
     "activeTab",
     "clipboardWrite",

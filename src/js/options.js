@@ -15,6 +15,11 @@ async function initOptions() {
     console.log('options:', options)
     document.getElementById('contextMenu').checked = options.contextMenu
     document.getElementById('favoriteColor').value = options.favoriteColor
+    const commands = await chrome.commands.getAll()
+    document.getElementById('mainKey').textContent =
+        commands.find((x) => x.name === '_execute_action').shortcut || 'Not Set'
+    document.getElementById('injectAlert').textContent =
+        commands.find((x) => x.name === 'inject-alert').shortcut || 'Not Set'
 }
 
 /**

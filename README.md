@@ -70,8 +70,8 @@ npm run firefox
 
 To Load Unpacked/Temporary Add-on make a `manifest.json` with.
 ```shell
-npm run make-chrome
-npm run make-firefox
+npm run manifest:chrome
+npm run manifest:firefox
 ```
 
 For more information on web-ext, [read this documentation](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/).  
@@ -88,15 +88,15 @@ npm install
 
 To load unpacked or temporary addon from the [src](src) folder, you must generate the `src/manifest.json` for the desired browser.
 ```shell
-npm run make-chrome
-npm run make-firefox
+npm run manifest:chrome
+npm run manifest:firefox
 ```
 
 If you would like to create a `.zip` archive of the [src](src) directory for the desired browser.
 ```shell
-npm run build-chrome
-npm run build-firefox
-npm run build-all
+npm run build
+npm run build:chrome
+npm run build:firefox
 ```
 
 For more information on building, see the scripts in the [package.json](package.json) file.

@@ -12,7 +12,7 @@ document.querySelectorAll('[data-href]').forEach((el) => {
  */
 async function initPopup() {
     const { options } = await chrome.storage.sync.get(['options'])
-    console.log('options', options)
+    // console.log('options', options)
     if (options.favoriteColor) {
         console.log(`options.favoriteColor: ${options.favoriteColor}`)
         document.getElementById('favoriteColor').textContent =

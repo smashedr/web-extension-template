@@ -7,10 +7,36 @@ chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.contextMenus.onClicked.addListener(contextMenuClick)
 
 chrome.notifications.onClicked.addListener((notificationId) => {
-    // You need to provide an id to the sendNotification function to make this usable
     console.log(`notifications.onClicked: ${notificationId}`)
     chrome.notifications.clear(notificationId)
 })
+
+chrome.commands.onCommand.addListener(onCommand)
+
+async function onCommand(command) {
+    console.log(`onCommand: command: ${command}`)
+    if (command === 'inject-alert') {
+        await injectAlert()
+    } else {
+        console.warn(`Unknown command: ${command}`)
+    }
+}
+
+async function injectAlert() {
+    const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+    })
+    await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: injectAlertFunction,
+        args: ['alert'],
+    })
+}
+
+function injectAlertFunction(name) {
+    alert(`contentScriptFunc: name: ${name}`)
+}
 
 /**
  * Init Context Menus and Options

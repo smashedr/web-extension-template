@@ -6,6 +6,20 @@
   "description": "__MSG_appDesc__",
   "homepage_url": "https://github.com/cssnr",
   "author": "Shane",
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+X"
+      },
+      "description": "Show Popup"
+    },
+    "inject-alert": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F"
+      },
+      "description": "Inject Alert"
+    }
+  },
   "permissions": [
     "activeTab",
     "clipboardWrite",

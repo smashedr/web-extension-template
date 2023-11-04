@@ -14,17 +14,35 @@
         <div class="col-md-6 col-12 m-auto">
             <div class="card" >
                 <div class="card-body">
-                    <h1 class="text-center" data-locale="appName"></h1>
-                    <img src="../images/logo128.png" class="img-fluid m-auto d-block" alt="Link Extractor" height="128" width="128">
-                    <p class="text-center lead"><span data-locale="version"></span></p>
+                    <h1 class="text-center"></h1>
+                    <div class="justify-content-center align-items-center d-flex">
+                        <img src="../images/logo48.png" class="img-fluid float-start me-2" alt="Link Extractor" height="48" width="48">
+                        <h1 class="align-middle" data-locale="appName"></h1>
+                    </div>
+                    <div class="clearfix"></div>
+                    <p class="text-center lead"><span id="version" class=""></span></p>
+                    <table class="table table-sm table-borderless ">
+                        <caption class="visually-hidden">Keyboard Shortcuts</caption>
+                        <thead class="visually-hidden"><tr><th>Description</th><th>Shortcut</th></tr></thead>
+                        <tbody>
+                        <tr>
+                            <td>Show Popup Action</td>
+                            <td class="text-end"><kbd id="mainKey">Unknown</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Extract Links from Tab</td>
+                            <td class="text-end"><kbd id="injectAlert">Unknown</kbd></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <form id="options-form">
                         <div class="mb-3">
                             <label for="favoriteColor" class="form-label visually-hidden"></label>
                             <input id="favoriteColor" class="form-control" type="text" placeholder="Favorite Color"
-                                   aria-describedby="favoriteColorText">
+                                   aria-describedby="favoriteColorText" autofocus>
                             <div id="favoriteColorText" class="form-text">Enter Your Favorite Color</div>
                         </div>
-                        <div class="form-check form-switch form-control-lg mb-3">
+                        <div class="form-check form-switch mb-3">
                             <input class="form-check-input" type="checkbox" role="switch" id="contextMenu">
                             <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">Enable Right Click Menu</label>
                         </div>

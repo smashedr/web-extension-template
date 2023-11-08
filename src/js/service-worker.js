@@ -13,29 +13,23 @@ chrome.notifications.onClicked.addListener((notificationId) => {
 
 chrome.commands.onCommand.addListener(onCommand)
 
+// chrome.storage.onChanged.addListener((changes, namespace) => {
+//     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+//         console.log(
+//             `Storage key "${key}" in namespace "${namespace}" changed. Old/New:`,
+//             oldValue,
+//             newValue
+//         )
+//     }
+// })
+
 async function onCommand(command) {
     console.log(`onCommand: command: ${command}`)
     if (command === 'inject-alert') {
-        await injectAlert()
+        await injectFunction(alertFunction, ['Hello World'])
     } else {
         console.warn(`Unknown command: ${command}`)
     }
-}
-
-async function injectAlert() {
-    const [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-    })
-    await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: injectAlertFunction,
-        args: ['alert'],
-    })
-}
-
-function injectAlertFunction(name) {
-    alert(`contentScriptFunc: name: ${name}`)
 }
 
 /**
@@ -70,6 +64,11 @@ async function contextMenuClick(ctx) {
         console.log(`text: ${text}`)
         await clipboardWrite(text)
         await sendNotification('Copied Selection', text.substring(0, 64))
+        // } else if (ctx.menuItemId === 'link') {
+        //     console.log('navigator:', navigator)
+        //     console.log('link:', ctx)
+        //     console.log(`ctx.linkUrl: ${ctx.linkUrl}`)
+        //     await injectFunction(findLink, [ctx.linkUrl])
     } else if (ctx.menuItemId === 'color') {
         const favoriteColor = ctx.selectionText.trim().toLowerCase()
         console.log(`favoriteColor: ${favoriteColor}`)
@@ -91,6 +90,62 @@ async function contextMenuClick(ctx) {
     } else {
         console.error(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
     }
+}
+
+/**
+ * Function to send alert with message for testing
+ * @function findLink
+ * @param {String} message
+ */
+function alertFunction(message) {
+    alert(`Alert: ${message}`)
+}
+
+// /**
+//  * Find Link and Copy to Clipboard
+//  * @function findLink
+//  * @param {String} href
+//  */
+// function findLink(href) {
+//     // let elements = document.querySelectorAll(`a[href=${name}]`)
+//     let elements = document.getElementsByTagName('a')
+//     let results = new Set()
+//     Array.from(elements).forEach(function (e) {
+//         if (e.href === href) {
+//             const text = e.textContent.trim()
+//             if (text) {
+//                 results.add(text)
+//             }
+//         }
+//     })
+//     results = Array.from(results)
+//     console.log(results)
+//     if (results.length >= 1) {
+//         navigator.clipboard.writeText(results[0])
+//         if (results.length > 1) {
+//             console.warn('Found Multiple Results:', results)
+//         }
+//     } else {
+//         console.warn('No Results')
+//     }
+// }
+
+/**
+ * Inject Function into Current Tab with args
+ * @function injectFunction
+ * @param {Function} func
+ * @param {Array} args
+ */
+async function injectFunction(func, args) {
+    const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+    })
+    await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: func,
+        args: args,
+    })
 }
 
 /**

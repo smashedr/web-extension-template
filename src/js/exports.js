@@ -6,7 +6,7 @@
  */
 export function createContextMenus() {
     const contexts = [
-        // [['link'], 'link', 'Link Menu'],
+        // [['link'], 'link', 'Copy Link Text'],
         [['page'], 'page', 'Copy Page URL to Clipboard'],
         [['selection'], 'color', 'Set Selection as Favorite Color'],
         [['selection'], 'copy', 'Copy Selection to Clipboard'],

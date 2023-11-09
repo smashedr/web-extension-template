@@ -1,6 +1,7 @@
 // JS for popup.html
 
 document.addEventListener('DOMContentLoaded', initPopup)
+document.getElementById('permissions').addEventListener('click', grantPerms)
 
 document.querySelectorAll('[data-href]').forEach((el) => {
     el.addEventListener('click', popupLink)
@@ -18,6 +19,36 @@ async function initPopup() {
         document.getElementById('favoriteColor').textContent =
             options.favoriteColor
     }
+    let hasPerms = await chrome.permissions.contains({
+        origins: ['http://*/*', 'https://*/*'],
+    })
+    if (!hasPerms) {
+        document.getElementById('permissions').style.display = 'block'
+    }
+}
+
+/**
+ * Grant Permissions Button Click Callback
+ * @function grantPerms
+ * @param {MouseEvent} event
+ */
+async function grantPerms(event) {
+    console.log('permissions click:', event)
+
+    chrome.permissions.request({
+        origins: ['https://*/*', 'http://*/*'],
+    })
+    window.close()
+
+    // chrome.permissions.request(
+    //     {
+    //         origins: ['https://*/*', 'http://*/*'],
+    //     },
+    //     (granted) => {
+    //         console.log('granted:', granted)
+    //     }
+    // )
+    // window.close()
 }
 
 /**

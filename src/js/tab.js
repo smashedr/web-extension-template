@@ -2,7 +2,7 @@
 
 chrome.storage.sync.get(['sites']).then((result) => {
     console.log(result.sites)
-    if (result.sites.includes(window.location.host)) {
+    if (result?.sites?.includes(window.location.host)) {
         console.log(`ACTIVE: ${window.location.host}`)
         updateLinks()
         const observer = new MutationObserver(function () {

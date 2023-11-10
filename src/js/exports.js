@@ -52,6 +52,7 @@ export async function getTabUrl() {
 }
 
 export async function toggleSite(url) {
+    console.log(`toggleSite: url: ${url}`)
     let { sites } = await chrome.storage.sync.get(['sites'])
     if (!sites.includes(url.hostname)) {
         console.log(`Enabling Site: ${url.hostname}`)

@@ -43,10 +43,11 @@ async function onCommand(command) {
  */
 export async function onInstalled() {
     console.log('onInstalled')
-    let { options } = await chrome.storage.sync.get(['options'])
+    let { options, sites } = await chrome.storage.sync.get(['options', 'sites'])
     options = options || { favoriteColor: '', contextMenu: true }
-    console.log('options:', options)
-    await chrome.storage.sync.set({ options })
+    sites = sites || []
+    console.log('options:', options, 'sites:', sites)
+    await chrome.storage.sync.set({ options, sites })
     if (options.contextMenu) {
         createContextMenus()
     }

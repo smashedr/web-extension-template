@@ -15,7 +15,7 @@
     },
     "toggle-site": {
       "suggested_key": {
-        "default": "Ctrl+Shift+N"
+        "default": "Alt+Shift+N"
       },
       "description": "Toggle Site"
     },

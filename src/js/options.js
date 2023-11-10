@@ -37,6 +37,7 @@ async function saveOptions(event) {
     options.favoriteColor = document.getElementById('favoriteColor').value
     console.log('options:', options)
     if (options.contextMenu) {
+        chrome.contextMenus.removeAll()
         createContextMenus()
     } else {
         chrome.contextMenus.removeAll()

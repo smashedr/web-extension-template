@@ -1,6 +1,6 @@
 // Background Service Worker JS
 
-import { createContextMenus } from './exports.js'
+import { createContextMenus, getTabUrl, toggleSite } from './exports.js'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 
@@ -25,7 +25,12 @@ chrome.commands.onCommand.addListener(onCommand)
 
 async function onCommand(command) {
     console.log(`onCommand: command: ${command}`)
-    if (command === 'inject-alert') {
+    if (command === 'toggle-site') {
+        const { tab, url } = await getTabUrl()
+        console.log('toggle-site', tab, url)
+        await toggleSite(url)
+    } else if (command === 'inject-alert') {
+        console.log('toggle-site')
         await injectFunction(alertFunction, ['Hello World'])
     } else {
         console.warn(`Unknown command: ${command}`)
@@ -50,10 +55,10 @@ export async function onInstalled() {
 /**
  * Context Menu Click Callback
  * @function contextMenuClick
- * @param {Object} ctx
+ * @param {OnClickData} ctx
  */
 async function contextMenuClick(ctx) {
-    console.log('ctx:', ctx)
+    console.log('contextMenuClick:', ctx)
     console.log('ctx.menuItemId: ' + ctx.menuItemId)
     if (ctx.menuItemId === 'page') {
         console.log(`ctx.pageUrl: ${ctx.pageUrl}`)

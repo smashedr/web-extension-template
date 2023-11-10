@@ -13,6 +13,12 @@
       },
       "description": "Show Popup"
     },
+    "toggle-site": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+N"
+      },
+      "description": "Toggle Site"
+    },
     "inject-alert": {
       "suggested_key": {
         "default": "Ctrl+Shift+F"
@@ -20,6 +26,12 @@
       "description": "Inject Alert"
     }
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/tab.js"]
+    }
+  ],
   "permissions": [
     "activeTab",
     "clipboardWrite",

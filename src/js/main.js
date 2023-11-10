@@ -1,4 +1,4 @@
-// JS loaded first
+// JS for options.html and popup.html
 
 // new ClipboardJS('.clip')
 

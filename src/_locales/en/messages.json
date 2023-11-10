@@ -1,10 +1,10 @@
 {
-    "appName": {
-        "message": "Web Extension",
-        "description": "appName description."
-    },
-    "appDesc": {
-        "message": "Web Extension Example.",
-        "description": "appDesc description."
-    }
+  "appName": {
+    "message": "Web Extension Example",
+    "description": "appName description."
+  },
+  "appDesc": {
+    "message": "Web Extension Example.",
+    "description": "appDesc description."
+  }
 }

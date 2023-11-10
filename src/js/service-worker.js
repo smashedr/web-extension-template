@@ -4,14 +4,16 @@ import { createContextMenus, getTabUrl, toggleSite } from './exports.js'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 
+chrome.commands.onCommand.addListener(onCommand)
+
+chrome.runtime.onMessage.addListener(onMessage)
+
 chrome.contextMenus.onClicked.addListener(contextMenuClick)
 
 chrome.notifications.onClicked.addListener((notificationId) => {
     console.log(`notifications.onClicked: ${notificationId}`)
     chrome.notifications.clear(notificationId)
 })
-
-chrome.commands.onCommand.addListener(onCommand)
 
 // chrome.storage.onChanged.addListener((changes, namespace) => {
 //     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
@@ -23,6 +25,26 @@ chrome.commands.onCommand.addListener(onCommand)
 //     }
 // })
 
+/**
+ * Init Context Menus and Options
+ * @function onInstalled
+ */
+export async function onInstalled() {
+    console.log('onInstalled')
+    let { options, sites } = await chrome.storage.sync.get(['options', 'sites'])
+    options = options || { favoriteColor: '', contextMenu: true }
+    sites = sites || []
+    console.log('options:', options, 'sites:', sites)
+    await chrome.storage.sync.set({ options, sites })
+    if (options.contextMenu) {
+        createContextMenus()
+    }
+}
+
+/**
+ * onCommand Callback
+ * @function onCommand
+ */
 async function onCommand(command) {
     console.log(`onCommand: command: ${command}`)
     if (command === 'toggle-site') {
@@ -38,18 +60,22 @@ async function onCommand(command) {
 }
 
 /**
- * Init Context Menus and Options
- * @function onInstalled
+ * onMessage Callback
+ * @function onMessage
  */
-export async function onInstalled() {
-    console.log('onInstalled')
-    let { options, sites } = await chrome.storage.sync.get(['options', 'sites'])
-    options = options || { favoriteColor: '', contextMenu: true }
-    sites = sites || []
-    console.log('options:', options, 'sites:', sites)
-    await chrome.storage.sync.set({ options, sites })
-    if (options.contextMenu) {
-        createContextMenus()
+async function onMessage(message, sender) {
+    // console.log(message, sender)
+    console.log(`message.badgeText: ${message.badgeText}`)
+    if (message.badgeText) {
+        console.log(`tabId: ${sender.tab.id}, text: ${message.badgeText}`)
+        chrome.action.setBadgeText({
+            tabId: sender.tab.id,
+            text: message.badgeText,
+        })
+        chrome.action.setBadgeBackgroundColor({
+            tabId: sender.tab.id,
+            color: 'green',
+        })
     }
 }
 

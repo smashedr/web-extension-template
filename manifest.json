@@ -33,7 +33,6 @@
     }
   ],
   "permissions": [
-    "activeTab",
     "clipboardWrite",
     "contextMenus",
     "notifications",

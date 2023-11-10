@@ -3,13 +3,16 @@
 chrome.storage.sync.get(['sites']).then((result) => {
     console.log(result.sites)
     if (result?.sites?.includes(window.location.host)) {
-        console.log(`ACTIVE: ${window.location.host}`)
+        console.log(`ENABLED: ${window.location.host}`)
+        chrome.runtime.sendMessage({ badgeText: 'On' })
         updateLinks()
         const observer = new MutationObserver(function () {
             updateLinks()
         })
         observer.observe(document.body, { subTree: true, attributes: true })
         console.log('done')
+    } else {
+        console.log(`DISABLED: ${window.location.host}`)
     }
 })
 

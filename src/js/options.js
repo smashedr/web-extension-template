@@ -13,8 +13,9 @@ async function initOptions() {
     console.log('initOptions')
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
-    document.getElementById('contextMenu').checked = options.contextMenu
     document.getElementById('favoriteColor').value = options.favoriteColor
+    document.getElementById('contextMenu').checked = options.contextMenu
+    document.getElementById('showUpdate').checked = options.showUpdate
     const commands = await chrome.commands.getAll()
     document.getElementById('mainKey').textContent =
         commands.find((x) => x.name === '_execute_action').shortcut || 'Not Set'
@@ -33,8 +34,9 @@ async function saveOptions(event) {
     event.preventDefault()
     console.log('saveOptions: event:', event)
     let options = {}
-    options.contextMenu = document.getElementById('contextMenu').checked
     options.favoriteColor = document.getElementById('favoriteColor').value
+    options.contextMenu = document.getElementById('contextMenu').checked
+    options.showUpdate = document.getElementById('showUpdate').checked
     console.log('options:', options)
     if (options.contextMenu) {
         chrome.contextMenus.removeAll()

@@ -27,23 +27,39 @@ chrome.notifications.onClicked.addListener((notificationId) => {
 
 /**
  * Init Context Menus and Options
- * @function onInstalled
- */
-export async function onInstalled() {
+ * * @function onInstalled
+ *  * @param {InstalledDetails} details
+ *  */
+export async function onInstalled(details) {
     console.log('onInstalled')
+    const defaultOptions = {
+        favoriteColor: '',
+        contextMenu: true,
+        showUpdate: true,
+    }
     let { options, sites } = await chrome.storage.sync.get(['options', 'sites'])
-    options = options || { favoriteColor: '', contextMenu: true }
+    options = options || defaultOptions
     sites = sites || []
     console.log('options:', options, 'sites:', sites)
     await chrome.storage.sync.set({ options, sites })
     if (options.contextMenu) {
         createContextMenus()
     }
+    // Check if Updated and Show Release Notes
+    if (options.showUpdate && details.reason === 'update') {
+        const manifest = chrome.runtime.getManifest()
+        if (manifest.version !== details.previousVersion) {
+            const url = `https://github.com/smashedr/web-extension-template/releases/tag/${manifest.version}`
+            console.log(`url: ${url}`)
+            await chrome.tabs.create({ active: true, url })
+        }
+    }
 }
 
 /**
  * onCommand Callback
  * @function onCommand
+ * @param {String} command
  */
 async function onCommand(command) {
     console.log(`onCommand: command: ${command}`)
@@ -62,6 +78,8 @@ async function onCommand(command) {
 /**
  * onMessage Callback
  * @function onMessage
+ * @param {Object} message
+ * @param {MessageSender} sender
  */
 async function onMessage(message, sender) {
     // console.log(message, sender)
@@ -83,9 +101,10 @@ async function onMessage(message, sender) {
  * Context Menu Click Callback
  * @function contextMenuClick
  * @param {OnClickData} ctx
+ * @param {Tab} tab
  */
-async function contextMenuClick(ctx) {
-    console.log('contextMenuClick:', ctx)
+async function contextMenuClick(ctx, tab) {
+    console.log('contextMenuClick:', ctx, tab)
     console.log('ctx.menuItemId: ' + ctx.menuItemId)
     if (ctx.menuItemId === 'page') {
         console.log(`ctx.pageUrl: ${ctx.pageUrl}`)
@@ -96,11 +115,6 @@ async function contextMenuClick(ctx) {
         console.log(`text: ${text}`)
         await clipboardWrite(text)
         await sendNotification('Copied Selection', text.substring(0, 64))
-        // } else if (ctx.menuItemId === 'link') {
-        //     console.log('navigator:', navigator)
-        //     console.log('link:', ctx)
-        //     console.log(`ctx.linkUrl: ${ctx.linkUrl}`)
-        //     await injectFunction(findLink, [ctx.linkUrl])
     } else if (ctx.menuItemId === 'color') {
         const favoriteColor = ctx.selectionText.trim().toLowerCase()
         console.log(`favoriteColor: ${favoriteColor}`)
@@ -132,35 +146,6 @@ async function contextMenuClick(ctx) {
 function alertFunction(message) {
     alert(`Alert: ${message}`)
 }
-
-// /**
-//  * Find Link and Copy to Clipboard
-//  * @function findLink
-//  * @param {String} href
-//  */
-// function findLink(href) {
-//     // let elements = document.querySelectorAll(`a[href=${name}]`)
-//     let elements = document.getElementsByTagName('a')
-//     let results = new Set()
-//     Array.from(elements).forEach(function (e) {
-//         if (e.href === href) {
-//             const text = e.textContent.trim()
-//             if (text) {
-//                 results.add(text)
-//             }
-//         }
-//     })
-//     results = Array.from(results)
-//     console.log(results)
-//     if (results.length >= 1) {
-//         navigator.clipboard.writeText(results[0])
-//         if (results.length > 1) {
-//             console.warn('Found Multiple Results:', results)
-//         }
-//     } else {
-//         console.warn('No Results')
-//     }
-// }
 
 /**
  * Inject Function into Current Tab with args

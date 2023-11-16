@@ -4,7 +4,7 @@
   "default_locale": "en",
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
-  "homepage_url": "https://github.com/cssnr",
+  "homepage_url": "https://github.com/smashedr/web-extension-template",
   "author": "Shane",
   "commands": {
     "_execute_action": {

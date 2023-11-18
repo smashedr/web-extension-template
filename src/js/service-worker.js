@@ -63,10 +63,6 @@ export async function onInstalled(details) {
  */
 async function onCommand(command) {
     console.log(`onCommand: command: ${command}`)
-    // if (command === 'toggle-site') {
-    //     const { tab, url } = await getTabUrl()
-    //     console.log('toggle-site', tab, url)
-    //     await toggleSite(url)
     if (command === 'inject-alert') {
         console.log('toggle-site')
         await injectFunction(alertFunction, ['Hello World'])

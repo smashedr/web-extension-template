@@ -1,14 +1,11 @@
 // Background Service Worker JS
 
-import { createContextMenus, getTabUrl, toggleSite } from './exports.js'
+import { createContextMenus } from './exports.js'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
-
 chrome.commands.onCommand.addListener(onCommand)
-
-chrome.runtime.onMessage.addListener(onMessage)
-
-chrome.contextMenus.onClicked.addListener(contextMenuClick)
+// chrome.runtime.onMessage.addListener(onMessage)
+chrome.contextMenus.onClicked.addListener(onClicked)
 
 chrome.notifications.onClicked.addListener((notificationId) => {
     console.log(`notifications.onClicked: ${notificationId}`)
@@ -31,7 +28,7 @@ chrome.notifications.onClicked.addListener((notificationId) => {
  *  * @param {InstalledDetails} details
  *  */
 export async function onInstalled(details) {
-    console.log('onInstalled')
+    console.log('onInstalled:', details)
     const defaultOptions = {
         favoriteColor: '',
         contextMenu: true,
@@ -45,8 +42,11 @@ export async function onInstalled(details) {
     if (options.contextMenu) {
         createContextMenus()
     }
-    // Check if Updated and Show Release Notes
-    if (options.showUpdate && details.reason === 'update') {
+    // Check if Installed or Updated and Show Options or Release Notes
+    if (details.reason === 'install') {
+        const url = chrome.runtime.getURL('/html/options.html')
+        await chrome.tabs.create({ active: true, url })
+    } else if (options.showUpdate && details.reason === 'update') {
         const manifest = chrome.runtime.getManifest()
         if (manifest.version !== details.previousVersion) {
             const url = `https://github.com/smashedr/web-extension-template/releases/tag/${manifest.version}`
@@ -63,11 +63,11 @@ export async function onInstalled(details) {
  */
 async function onCommand(command) {
     console.log(`onCommand: command: ${command}`)
-    if (command === 'toggle-site') {
-        const { tab, url } = await getTabUrl()
-        console.log('toggle-site', tab, url)
-        await toggleSite(url)
-    } else if (command === 'inject-alert') {
+    // if (command === 'toggle-site') {
+    //     const { tab, url } = await getTabUrl()
+    //     console.log('toggle-site', tab, url)
+    //     await toggleSite(url)
+    if (command === 'inject-alert') {
         console.log('toggle-site')
         await injectFunction(alertFunction, ['Hello World'])
     } else {
@@ -75,36 +75,36 @@ async function onCommand(command) {
     }
 }
 
-/**
- * onMessage Callback
- * @function onMessage
- * @param {Object} message
- * @param {MessageSender} sender
- */
-async function onMessage(message, sender) {
-    // console.log(message, sender)
-    console.log(`message.badgeText: ${message.badgeText}`)
-    if (message.badgeText) {
-        console.log(`tabId: ${sender.tab.id}, text: ${message.badgeText}`)
-        chrome.action.setBadgeText({
-            tabId: sender.tab.id,
-            text: message.badgeText,
-        })
-        chrome.action.setBadgeBackgroundColor({
-            tabId: sender.tab.id,
-            color: 'green',
-        })
-    }
-}
+// /**
+//  * onMessage Callback
+//  * @function onMessage
+//  * @param {Object} message
+//  * @param {MessageSender} sender
+//  */
+// async function onMessage(message, sender) {
+//     // console.log('onMessage:', message, sender)
+//     console.log(`message.badgeText: ${message.badgeText}`)
+//     if (message.badgeText) {
+//         console.log(`tabId: ${sender.tab.id}, text: ${message.badgeText}`)
+//         chrome.action.setBadgeText({
+//             tabId: sender.tab.id,
+//             text: message.badgeText,
+//         })
+//         chrome.action.setBadgeBackgroundColor({
+//             tabId: sender.tab.id,
+//             color: 'green',
+//         })
+//     }
+// }
 
 /**
  * Context Menu Click Callback
- * @function contextMenuClick
+ * @function onClicked
  * @param {OnClickData} ctx
  * @param {Tab} tab
  */
-async function contextMenuClick(ctx, tab) {
-    console.log('contextMenuClick:', ctx, tab)
+async function onClicked(ctx, tab) {
+    console.log('onClicked:', ctx, tab)
     console.log('ctx.menuItemId: ' + ctx.menuItemId)
     if (ctx.menuItemId === 'page') {
         console.log(`ctx.pageUrl: ${ctx.pageUrl}`)
@@ -116,7 +116,7 @@ async function contextMenuClick(ctx, tab) {
         await clipboardWrite(text)
         await sendNotification('Copied Selection', text.substring(0, 64))
     } else if (ctx.menuItemId === 'color') {
-        const favoriteColor = ctx.selectionText.trim().toLowerCase()
+        const favoriteColor = ctx.selectionText.trim()
         console.log(`favoriteColor: ${favoriteColor}`)
         if (favoriteColor.length > 32) {
             await sendNotification(
@@ -124,10 +124,12 @@ async function contextMenuClick(ctx, tab) {
                 'Color is longer than 32 characters long.'
             )
         } else {
-            await chrome.storage.sync.set({ favoriteColor })
+            const { options } = await chrome.storage.sync.get(['options'])
+            options.favoriteColor = favoriteColor
+            await chrome.storage.sync.set({ options })
             await sendNotification(
                 'Favorite Color Saved',
-                `Color: ${favoriteColor}`
+                `Color: ${options.favoriteColor}`
             )
         }
     } else if (ctx.menuItemId === 'options') {

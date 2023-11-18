@@ -33,36 +33,36 @@ export function createContextMenus() {
     }
 }
 
-/**
- * Get URL for Current Tab
- * @function getTabUrl
- * @return {tab, url}
- */
-export async function getTabUrl() {
-    const [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-    })
-    console.log(tab)
-    let url = ''
-    if (tab.url) {
-        url = new URL(tab.url)
-    }
-    return { tab, url }
-}
-
-export async function toggleSite(url) {
-    console.log(`toggleSite: url: ${url}`)
-    let { sites } = await chrome.storage.sync.get(['sites'])
-    if (!sites.includes(url.hostname)) {
-        console.log(`Enabling Site: ${url.hostname}`)
-        sites.push(url.hostname)
-        await chrome.storage.sync.set({ sites })
-    } else {
-        console.log(`Disabling Site: ${url.hostname}`)
-        sites.splice(sites.indexOf(url.hostname), 1)
-        console.log('sites:', sites)
-        await chrome.storage.sync.set({ sites })
-    }
-    console.log('sites:', sites)
-}
+// /**
+//  * Get URL for Current Tab
+//  * @function getTabUrl
+//  * @return {tab, url}
+//  */
+// export async function getTabUrl() {
+//     const [tab] = await chrome.tabs.query({
+//         active: true,
+//         currentWindow: true,
+//     })
+//     console.log(tab)
+//     let url = ''
+//     if (tab.url) {
+//         url = new URL(tab.url)
+//     }
+//     return { tab, url }
+// }
+//
+// export async function toggleSite(url) {
+//     console.log(`toggleSite: url: ${url}`)
+//     let { sites } = await chrome.storage.sync.get(['sites'])
+//     if (!sites.includes(url.hostname)) {
+//         console.log(`Enabling Site: ${url.hostname}`)
+//         sites.push(url.hostname)
+//         await chrome.storage.sync.set({ sites })
+//     } else {
+//         console.log(`Disabling Site: ${url.hostname}`)
+//         sites.splice(sites.indexOf(url.hostname), 1)
+//         console.log('sites:', sites)
+//         await chrome.storage.sync.set({ sites })
+//     }
+//     console.log('sites:', sites)
+// }

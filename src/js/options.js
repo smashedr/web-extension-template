@@ -19,8 +19,8 @@ async function initOptions() {
     const commands = await chrome.commands.getAll()
     document.getElementById('mainKey').textContent =
         commands.find((x) => x.name === '_execute_action').shortcut || 'Not Set'
-    document.getElementById('toggleSite').textContent =
-        commands.find((x) => x.name === 'toggle-site').shortcut || 'Not Set'
+    // document.getElementById('toggleSite').textContent =
+    //     commands.find((x) => x.name === 'toggle-site').shortcut || 'Not Set'
     document.getElementById('injectAlert').textContent =
         commands.find((x) => x.name === 'inject-alert').shortcut || 'Not Set'
 }
